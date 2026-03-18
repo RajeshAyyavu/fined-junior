@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FinEd Junior - The Foundation of Financial Wisdom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sun: #F5A623; --coral: #FF5C35; --teal: #0BA396; --deep: #0F1F38;
+      --cream: #FAFAF7; --white: #FFFFFF; --mint: #DFFAF5; --sky: #EDF6FF;
+      --peach: #FFF1EB; --text: #0F1F38; --muted: #5B6E82; --border: rgba(15,31,56,.09);
+      --fh: 'Outfit', sans-serif; --fb: 'Plus Jakarta Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--fb); background: var(--cream); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 5%; }
+    .lbl { font-family: var(--fh); font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--coral); margin-bottom: .75rem; }
+    .lbl-sun { color: var(--sun); }
+    .ttl { font-family: var(--fh); font-size: clamp(1.9rem, 3.5vw, 3rem); font-weight: 800; line-height: 1.15; color: var(--deep); }
+    .sub { font-size: 1.05rem; color: var(--muted); line-height: 1.75; max-width: 580px; margin-top: .9rem; }
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* BUTTONS */
+    .btn { display: inline-flex; align-items: center; gap: .45rem; font-family: var(--fh); font-weight: 700; font-size: .93rem; padding: .78rem 1.7rem; border-radius: 10px; text-decoration: none; cursor: pointer; border: none; transition: transform .2s, box-shadow .2s; }
+    .btn-coral { background: var(--coral); color: #fff; box-shadow: 0 6px 20px rgba(255,92,53,.28); }
+    .btn-coral:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255,92,53,.4); }
+    .btn-teal { background: var(--teal); color: #fff; box-shadow: 0 6px 20px rgba(11,163,150,.25); }
+    .btn-teal:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(11,163,150,.38); }
+    .btn-ghost { background: transparent; color: var(--deep); border: 2px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--coral); color: var(--coral); }
+    .btn-white { background: #fff; color: var(--deep); box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,.18); }
+    .btn-ow { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.32); }
+    .btn-ow:hover { border-color: #fff; background: rgba(255,255,255,.1); }
+
+    /* ─── NAV ─── */
+    nav { position: fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:1rem 5%; background:rgba(250,250,247,.94); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); transition:box-shadow .3s; }
+    nav.scrolled { box-shadow:0 4px 24px rgba(0,0,0,.07); }
+    .nlogo { display:flex; align-items:center; gap:.55rem; text-decoration:none; height: 40px; width: 90px; }
+    .nmark { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--coral),var(--sun)); display:flex; align-items:center; justify-content:center; font-family:var(--fh); font-size:1.1rem; font-weight:900; color:#fff; box-shadow:0 4px 12px rgba(255,92,53,.3); }
+    .ntext { font-family:var(--fh); font-size:1.25rem; font-weight:800; color:var(--deep); }
+    .ntext span { color:var(--coral); }
+    .nlinks { display:flex; align-items:center; gap:1.8rem; list-style:none; }
+    .nlinks a { text-decoration:none; font-family:var(--fh); font-size:.9rem; font-weight:600; color:var(--muted); transition:color .2s; }
+    .nlinks a:hover { color:var(--coral); }
+    .nlinks .ncta { background:var(--coral); color:#fff; padding:.48rem 1.2rem; border-radius:8px; transition:transform .2s, box-shadow .2s; }
+    .nlinks .ncta:hover { transform:translateY(-1px); box-shadow:0 8px 20px rgba(255,92,53,.35); }
+    .ham { display:none; flex-direction:column; gap:5px; cursor:pointer; border:none; background:none; }
+    .ham span { display:block; width:22px; height:2px; background:var(--deep); border-radius:2px; transition:.3s; }
+
+    /* ─── HERO ─── */
+    .hero { min-height:100vh; padding:9rem 5% 6rem; display:flex; align-items:center; background:linear-gradient(150deg,#FAFAF7 0%,#EDF6FF 55%,#FFF1EB 100%); position:relative; overflow:hidden; }
+    .hgrid { position:absolute; inset:0; background-image:linear-gradient(rgba(15,31,56,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(15,31,56,.04) 1px,transparent 1px); background-size:40px 40px; }
+    .hblob { position:absolute; border-radius:50%; filter:blur(90px); opacity:.32; pointer-events:none; }
+    .hb1 { width:400px; height:400px; background:var(--sun); top:-100px; right:5%; animation:dr 9s ease-in-out infinite; }
+    .hb2 { width:280px; height:280px; background:var(--coral); bottom:-80px; left:0; animation:dr 12s ease-in-out infinite reverse; }
+    .hb3 { width:240px; height:240px; background:var(--teal); top:40%; left:35%; animation:dr 14s ease-in-out infinite 2s; }
+    @keyframes dr { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-22px) scale(1.03);} }
+    .hero-in { position:relative; z-index:2; display:grid; grid-template-columns:1.1fr 0.9fr; gap:4rem; align-items:center; max-width:1180px; width:100%; margin:0 auto; }
+    .htxt { animation:ru .7s ease both; }
+    @keyframes ru { from{opacity:0;transform:translateY(22px);} to{opacity:1;transform:translateY(0);} }
+    .hpill { display:inline-flex; align-items:center; gap:.45rem; margin-bottom:1.4rem; background:rgba(11,163,150,.1); border:1px solid rgba(11,163,150,.25); color:var(--teal); font-family:var(--fh); font-size:.8rem; font-weight:700; padding:.4rem 1rem; border-radius:50px; }
+    .ldot { width:7px; height:7px; border-radius:50%; background:var(--teal); animation:bl 2s infinite; }
+    @keyframes bl { 0%,100%{opacity:1;} 50%{opacity:.3;} }
+    .hero h1 { font-family:var(--fh); font-size:clamp(2.6rem,5vw,4rem); font-weight:800; line-height:1.1; color:var(--deep); margin-bottom:1.3rem; }
+    .hero h1 .hi { color:var(--coral); }
+    .hero > * > .htxt > p { font-size:1.1rem; color:var(--muted); line-height:1.75; max-width:480px; margin-bottom:2.2rem; }
+    .hbtns { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:2.8rem; }
+    .htrust { display:flex; align-items:center; gap:1.5rem; padding-top:2rem; border-top:1px solid var(--border); flex-wrap:wrap; }
+    .ti { display:flex; align-items:center; gap:.4rem; font-size:.84rem; font-weight:600; color:var(--muted); }
+
+    /* Hero card */
+    .hvis { position:relative; animation:ru .7s ease .15s both; }
+    .hcard { background:#fff; border-radius:20px; padding:1.8rem; box-shadow:0 24px 80px rgba(0,0,0,.1); position:relative; z-index:3; }
+    .hch { display:flex; align-items:center; gap:.8rem; margin-bottom:1.4rem; }
+    .hava { width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,var(--teal),var(--sun)); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+    .hname { font-family:var(--fh); font-weight:700; font-size:.94rem; }
+    .hgrade { font-size:.77rem; color:var(--muted); }
+    .hbadge { margin-left:auto; background:var(--mint); color:var(--teal); border-radius:6px; font-family:var(--fh); font-size:.72rem; font-weight:700; padding:.28rem .7rem; }
+    .hpw { margin-bottom:1.4rem; }
+    .hpl { display:flex; justify-content:space-between; font-size:.78rem; font-weight:600; margin-bottom:.5rem; color:var(--muted); }
+    .hbar { height:10px; background:#f0f0f0; border-radius:5px; overflow:hidden; }
+    .hfill { height:100%; border-radius:5px; background:linear-gradient(90deg,var(--teal),var(--sun)); animation:fu 2s ease forwards .8s; width:0; }
+    @keyframes fu { to{width:72%;} }
+    .hmods { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; }
+    .hmod { background:var(--cream); border-radius:10px; padding:.65rem .85rem; font-size:.79rem; font-weight:600; display:flex; align-items:center; gap:.45rem; }
+    .hmod.done { background:var(--mint); color:var(--teal); }
+    .hmod.act { background:var(--peach); color:var(--coral); }
+    .hfl { position:absolute; background:#fff; border-radius:14px; box-shadow:0 12px 40px rgba(0,0,0,.1); padding:.85rem 1rem; animation:dr var(--d,8s) ease-in-out infinite; }
+    .hfl1 { top:-20px; right:-20px; --d:7s; display:flex; align-items:center; gap:.55rem; white-space:nowrap; }
+    .hfl1 .fi { font-size:1.3rem; }
+    .hfl1 strong { display:block; font-family:var(--fh); font-weight:700; font-size:.86rem; }
+    .hfl1 span { font-size:.74rem; color:var(--muted); }
+    .hfl2 { bottom:-18px; left:-20px; --d:10s; }
+    .hfl2 .aw { font-size:1.5rem; display:block; margin-bottom:.25rem; }
+    .hfl2 strong { display:block; font-family:var(--fh); font-weight:700; font-size:.86rem; }
+    .hfl2 span { color:var(--teal); font-size:.76rem; font-weight:600; }
+
+    /* ─── STATS BAND ─── */
+    .sband { background:var(--deep); padding:3.5rem 5%; }
+    .sband .container { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+    .sbi { text-align:center; padding:1.5rem 1rem; border-right:1px solid rgba(255,255,255,.08); }
+    .sbi:last-child { border-right:none; }
+    .sbn { font-family:var(--fh); font-size:2.5rem; font-weight:900; color:var(--sun); display:block; line-height:1; }
+    .sbl { margin-top:.55rem; color:rgba(255,255,255,.6); font-size:.84rem; line-height:1.5; }
+
+    /* ─── ABOUT ─── */
+    .about { background:#fff; padding:6.5rem 5%; }
+    .about .container { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+    .avf { aspect-ratio:1/1; border-radius:28px; background:linear-gradient(135deg,#EDF6FF,#FFF1EB); display:flex; align-items:center; justify-content:center; font-size:7rem; position:relative; overflow:hidden; }
+    .avf::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 30% 25%,rgba(245,166,35,.28),transparent 55%); }
+    .avb { position:absolute; background:#fff; border-radius:14px; padding:.85rem 1rem; box-shadow:0 10px 32px rgba(0,0,0,.09); display:flex; align-items:center; gap:.65rem; }
+    .avb.b1 { bottom:-14px; right:-14px; }
+    .avb.b2 { top:-14px; left:-14px; }
+    .avb .bi { font-size:1.4rem; }
+    .avb strong { display:block; font-family:var(--fh); font-weight:700; font-size:.86rem; }
+    .avb span { font-size:.74rem; color:var(--muted); }
+    .vlist { display:flex; flex-direction:column; gap:1rem; margin-top:2rem; }
+    .vi { display:flex; gap:1rem; padding:1.2rem; border-radius:14px; border:1px solid var(--border); background:var(--cream); transition:border-color .2s,transform .2s,box-shadow .2s; }
+    .vi:hover { border-color:var(--coral); transform:translateX(4px); box-shadow:0 6px 18px rgba(0,0,0,.06); }
+    .vico { width:44px; height:44px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+    .vc { background:var(--peach); } .vt { background:var(--mint); } .vs { background:rgba(245,166,35,.12); }
+    .vi h4 { font-family:var(--fh); font-weight:700; font-size:.93rem; margin-bottom:.28rem; }
+    .vi p { font-size:.86rem; color:var(--muted); line-height:1.6; }
+
+    /* ─── MARQUEE ─── */
+    .mqw { background:var(--deep); padding:2.8rem 0; overflow:hidden; }
+    .mqn { text-align:center; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.32); margin-bottom:1.2rem; font-family:var(--fh); }
+    .mqt { display:flex; gap:.9rem; width:max-content; animation:mq 32s linear infinite; }
+    .mqt:hover { animation-play-state:paused; }
+    @keyframes mq { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+    .mc { white-space:nowrap; border-radius:8px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.8); font-family:var(--fh); font-size:.84rem; font-weight:600; padding:.52rem 1.15rem; transition:background .2s,color .2s; }
+    .mc:hover { background:rgba(245,166,35,.18); color:var(--sun); border-color:rgba(245,166,35,.38); }
+
+    /* ─── FOR SCHOOLS ─── */
+    .fschools { padding:6.5rem 5%; background:var(--deep); }
+    .fsh { text-align:center; margin-bottom:4rem; }
+    .fsh .ttl { color:#fff; }
+    .fsh .sub { color:rgba(255,255,255,.6); margin:.9rem auto 0; }
+    .scgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+    .scc { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:18px; padding:2rem; transition:background .25s,border-color .25s,transform .25s; }
+    .scc:hover { background:rgba(255,255,255,.1); border-color:rgba(245,166,35,.4); transform:translateY(-4px); }
+    .scico { width:52px; height:52px; border-radius:14px; margin-bottom:1.3rem; display:flex; align-items:center; justify-content:center; font-size:1.55rem; }
+    .is { background:rgba(245,166,35,.18); } .ic { background:rgba(255,92,53,.15); } .it { background:rgba(11,163,150,.15); }
+    .ib { background:rgba(99,153,255,.15); } .ig { background:rgba(52,199,89,.12); } .ip { background:rgba(175,82,222,.12); }
+    .scc h4 { font-family:var(--fh); font-weight:700; font-size:1.03rem; color:#fff; margin-bottom:.55rem; }
+    .scc p { font-size:.86rem; color:rgba(255,255,255,.6); line-height:1.65; }
+    .scstrip { margin-top:3.5rem; background:rgba(245,166,35,.1); border:1px solid rgba(245,166,35,.28); border-radius:20px; padding:2.5rem 3rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap; }
+    .scst h3 { font-family:var(--fh); font-weight:800; font-size:1.4rem; color:#fff; margin-bottom:.35rem; }
+    .scst p { color:rgba(255,255,255,.6); font-size:.9rem; }
+    .scstb { display:flex; gap:1rem; flex-wrap:wrap; }
+
+    /* ─── HOW IT WORKS ─── */
+    .how { padding:6.5rem 5%; background:#fff; }
+    .howh { text-align:center; margin-bottom:4rem; }
+    .howh .sub { margin:1rem auto 0; }
+    .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; position:relative; }
+    .steps::before { content:''; position:absolute; top:27px; left:calc(12.5% + 1.5rem); right:calc(12.5% + 1.5rem); height:2px; background:repeating-linear-gradient(90deg,var(--border) 0,var(--border) 8px,transparent 8px,transparent 18px); }
+    .step { text-align:center; padding:0 .5rem; }
+    .snum { width:54px; height:54px; border-radius:50%; margin:0 auto 1.2rem; background:var(--cream); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:var(--fh); font-size:1.05rem; font-weight:800; color:var(--deep); position:relative; z-index:1; transition:background .2s,border-color .2s,color .2s; }
+    .step:hover .snum { background:var(--coral); border-color:var(--coral); color:#fff; }
+    .step h4 { font-family:var(--fh); font-weight:700; font-size:.96rem; margin-bottom:.45rem; }
+    .step p { font-size:.84rem; color:var(--muted); line-height:1.65; }
+
+    /* ─── CURRICULUM ─── */
+    .curr { padding:6.5rem 5%; background:var(--cream); }
+    .currh { text-align:center; margin-bottom:3.5rem; }
+    .currh .sub { margin:1rem auto 0; }
+    .tgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.8rem; }
+    .tc { border-radius:20px; padding:2.2rem 2rem; position:relative; overflow:hidden; transition:transform .3s,box-shadow .3s; }
+    .tc:hover { transform:translateY(-8px); }
+    .tc::after { content:''; position:absolute; top:-50px; right:-50px; width:160px; height:160px; border-radius:50%; background:rgba(255,255,255,.06); }
+    .t1 { background:linear-gradient(160deg,var(--deep) 0%,#1C3458 100%); color:#fff; box-shadow:0 20px 60px rgba(15,31,56,.35); }
+    .t2 { background:linear-gradient(160deg,var(--coral) 0%,#D94022 100%); color:#fff; box-shadow:0 20px 60px rgba(255,92,53,.3); }
+    .t3 { background:linear-gradient(160deg,var(--teal) 0%,#088A7E 100%); color:#fff; box-shadow:0 20px 60px rgba(11,163,150,.3); }
+    .tlbl { display:inline-block; font-family:var(--fh); font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; background:rgba(255,255,255,.18); border-radius:6px; padding:.28rem .75rem; margin-bottom:1.2rem; }
+    .tc h3 { font-family:var(--fh); font-size:1.45rem; font-weight:800; margin-bottom:.28rem; }
+    .tfc { font-size:.84rem; opacity:.7; margin-bottom:1.7rem; }
+    .tc ul { list-style:none; display:flex; flex-direction:column; gap:.6rem; }
+    .tc ul li { font-size:.86rem; opacity:.88; display:flex; align-items:flex-start; gap:.55rem; }
+    .tc ul li::before { content:'›'; font-weight:700; opacity:.6; flex-shrink:0; }
+    .tlnk { display:inline-flex; align-items:center; gap:.4rem; margin-top:1.8rem; background:rgba(255,255,255,.18); color:inherit; padding:.58rem 1.2rem; border-radius:8px; font-family:var(--fh); font-weight:700; font-size:.87rem; text-decoration:none; transition:background .2s; }
+    .tlnk:hover { background:rgba(255,255,255,.3); }
+
+    /* ─── IMPACT ─── */
+    .impact { padding:6.5rem 5%; background:#fff; }
+    .impact .container { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+    .icards { display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; margin-top:2rem; }
+    .icard { background:var(--cream); border-radius:16px; padding:1.5rem; border:1px solid var(--border); text-align:center; transition:transform .2s,box-shadow .2s; }
+    .icard:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,.07); }
+    .icn { font-family:var(--fh); font-size:2.1rem; font-weight:900; color:var(--coral); display:block; }
+    .icard.it .icn { color:var(--teal); } .icard.is .icn { color:var(--sun); } .icard.id .icn { color:var(--deep); }
+    .icard p { font-size:.81rem; color:var(--muted); margin-top:.35rem; line-height:1.5; }
+    .fbs { display:flex; flex-direction:column; gap:1.2rem; }
+    .fb2 { padding:1.4rem 1.6rem; border-radius:16px; border-left:4px solid var(--coral); background:var(--cream); box-shadow:0 4px 16px rgba(0,0,0,.05); transition:transform .2s; }
+    .fb2:hover { transform:translateX(4px); }
+    .fb2.fbt { border-color:var(--teal); } .fb2.fbs2 { border-color:var(--sun); }
+    .fb2 blockquote { font-size:.91rem; color:var(--text); line-height:1.65; font-style:italic; }
+    .fb2 cite { display:block; margin-top:.45rem; font-size:.77rem; color:var(--muted); font-style:normal; font-weight:700; }
+
+    /* ─── SCHOOL TESTIMONIALS ─── */
+    .stesti { padding:6.5rem 5%; background:var(--sky); }
+    .sth { text-align:center; margin-bottom:3.5rem; }
+    .stg { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+    .stc { background:#fff; border-radius:18px; padding:2rem; box-shadow:0 4px 20px rgba(0,0,0,.05); transition:transform .2s,box-shadow .2s; display:flex; flex-direction:column; }
+    .stc:hover { transform:translateY(-5px); box-shadow:0 20px 48px rgba(0,0,0,.09); }
+    .stag { display:inline-block; margin-bottom:.9rem; background:var(--mint); color:var(--teal); border-radius:6px; font-family:var(--fh); font-size:.72rem; font-weight:700; padding:.28rem .7rem; }
+    .stq { font-size:.92rem; line-height:1.75; color:var(--text); font-style:italic; margin-bottom:1.5rem; flex:1; }
+    .stau { display:flex; align-items:center; gap:.75rem; }
+    .stav { width:42px; height:42px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:var(--fh); font-weight:800; font-size:.95rem; color:#fff; }
+    .av1 { background:linear-gradient(135deg,var(--teal),#0CCFBE); }
+    .av2 { background:linear-gradient(135deg,var(--coral),var(--sun)); }
+    .av3 { background:linear-gradient(135deg,var(--deep),#2A4A70); }
+    .stn { font-family:var(--fh); font-weight:700; font-size:.88rem; }
+    .str { font-size:.77rem; color:var(--muted); }
+
+    /* ─── PARTNERSHIP ─── */
+    .ppship { padding:6.5rem 5%; background:var(--cream); }
+    .pph { text-align:center; margin-bottom:3.5rem; }
+    .pph .sub { margin:1rem auto 0; }
+    .ppg { display:grid; grid-template-columns:repeat(3,1fr); gap:1.8rem; }
+    .ppc { border-radius:20px; border:2px solid var(--border); padding:2.2rem; transition:border-color .2s,transform .2s,box-shadow .2s; position:relative; }
+    .ppc:hover { border-color:var(--coral); transform:translateY(-6px); box-shadow:0 20px 56px rgba(0,0,0,.08); }
+    .ppc.feat { border-color:var(--coral); background:linear-gradient(160deg,#fff9f7,#fff); }
+    .ppbadge { position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:var(--coral); color:#fff; font-family:var(--fh); font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:.28rem .85rem; border-radius:50px; }
+    .ppico { font-size:1.9rem; margin-bottom:.9rem; display:block; }
+    .ppc h3 { font-family:var(--fh); font-weight:800; font-size:1.25rem; margin-bottom:.35rem; }
+    .ppdesc { font-size:.87rem; color:var(--muted); margin-bottom:1.4rem; line-height:1.6; }
+    .ppf { list-style:none; display:flex; flex-direction:column; gap:.6rem; margin-bottom:1.8rem; }
+    .ppf li { font-size:.86rem; display:flex; align-items:center; gap:.52rem; }
+    .ppf li::before { content:'✓'; font-weight:800; color:var(--teal); flex-shrink:0; }
+
+    /* ─── WHY ─── */
+    .why { padding:6.5rem 5%; background:#fff; }
+    .why .container { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
+    .wcards { display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; margin-top:2rem; }
+    .wc { background:var(--cream); border-radius:16px; padding:1.6rem; border:1px solid var(--border); transition:transform .2s,box-shadow .2s; }
+    .wc:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,.07); }
+    .wc.hl { background:linear-gradient(135deg,var(--sun),#E89810); border-color:transparent; }
+    .wco { font-size:1.65rem; display:block; margin-bottom:.75rem; }
+    .wc h4 { font-family:var(--fh); font-weight:700; font-size:.93rem; margin-bottom:.35rem; }
+    .wc p { font-size:.83rem; color:var(--muted); line-height:1.6; }
+    .wc.hl p { color:rgba(15,31,56,.72); }
+    .wfacts { display:flex; flex-direction:column; gap:1.4rem; padding-top:3.5rem; }
+
+    /* ─── CTA ─── */
+    .cta { padding:7rem 5%; text-align:center; background:linear-gradient(140deg,var(--deep) 0%,#1A3560 100%); position:relative; overflow:hidden; }
+    .cta::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 20% 50%,rgba(245,166,35,.14),transparent 55%),radial-gradient(ellipse at 80% 50%,rgba(255,92,53,.1),transparent 55%); }
+    .cta .container { position:relative; z-index:1; }
+    .cta h2 { font-family:var(--fh); font-size:clamp(2rem,4vw,3.2rem); font-weight:800; color:#fff; margin-bottom:.85rem; }
+    .cta h2 span { color:var(--sun); }
+    .cta p { color:rgba(255,255,255,.65); font-size:1.05rem; max-width:520px; margin:0 auto 2.5rem; line-height:1.75; }
+    .ctabtns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+
+    /* ─── FOOTER ─── */
+    footer { background:#090F1A; color:rgba(255,255,255,.65); padding:4.5rem 5% 2rem; }
+    .fg { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; border-bottom:1px solid rgba(255,255,255,.07); margin-bottom:2rem; }
+    .fbl .ntext { color:#fff; }
+    .fbp { font-size:.86rem; line-height:1.7; color:rgba(255,255,255,.42); max-width:270px; margin-top:.8rem; }
+    .fsoc { display:flex; gap:.65rem; margin-top:1.5rem; }
+    .fsb { width:35px; height:35px; border-radius:9px; background:rgba(255,255,255,.07); color:rgba(255,255,255,.55); display:flex; align-items:center; justify-content:center; font-size:.85rem; text-decoration:none; transition:background .2s,color .2s; font-family:var(--fh); font-weight:700; }
+    .fsb:hover { background:var(--coral); color:#fff; }
+    .fc2 h5 { font-family:var(--fh); font-weight:700; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:1.1rem; }
+    .fc2 ul { list-style:none; display:flex; flex-direction:column; gap:.6rem; }
+    .fc2 ul a { font-size:.86rem; color:rgba(255,255,255,.48); text-decoration:none; transition:color .2s; }
+    .fc2 ul a:hover { color:var(--sun); }
+    .fbot { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+    .fbot p { font-size:.79rem; color:rgba(255,255,255,.28); }
+    .fbot a { color:rgba(255,255,255,.28); text-decoration:none; }
+    .fbot a:hover { color:var(--sun); }
+
+    /* ─── RESPONSIVE ─── */
+    @media(max-width:1024px){
+      .tgrid,.scgrid,.stg,.ppg{grid-template-columns:1fr 1fr;}
+      .steps{grid-template-columns:repeat(2,1fr);}
+      .steps::before{display:none;}
+    }
+    @media(max-width:768px){
+      .hero-in,.about .container,.impact .container,.why .container{grid-template-columns:1fr;gap:3rem;}
+      .hvis{display:none;}
+      .sband .container{grid-template-columns:1fr 1fr;}
+      .tgrid,.scgrid,.stg,.ppg,.steps{grid-template-columns:1fr;}
+      .scstrip,.scst{flex-direction:column;}
+      .fg{grid-template-columns:1fr 1fr;}
+      .wcards{grid-template-columns:1fr;}
+    }
+    @media(max-width:640px){
+      .nlinks{display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--cream);padding:1.5rem 5%;gap:1.2rem;border-bottom:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,.07);}
+      .nlinks.open{display:flex;}
+      .ham{display:flex;}
+      .sband .container{grid-template-columns:1fr;}
+      .sbi{border-right:none;border-bottom:1px solid rgba(255,255,255,.07);}
+      .sbi:last-child{border-bottom:none;}
+      .fg{grid-template-columns:1fr;}
+      .ctabtns{flex-direction:column;align-items:center;}
+      .icards{grid-template-columns:1fr 1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">
+    <img src="FinEd logo.png" class="nlogo" srcset="">
+    <!-- <div class="nmark">₹</div> -->
+    <!-- <span class="ntext">FinEd <span>Junior</span></span> -->
+  </a>
+  <ul class="nlinks" id="nl">
+    <li><a href="#about">About</a></li>
+    <li><a href="#fschools">For Schools</a></li>
+    <li><a href="#curr">Curriculum</a></li>
+    <li><a href="#ppship">Partner</a></li>
+    <li><a href="#contact" class="ncta">Get Started</a></li>
+  </ul>
+  <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hgrid"></div>
+  <div class="hblob hb1"></div><div class="hblob hb2"></div><div class="hblob hb3"></div>
+  <div class="hero-in">
+    <div class="htxt">
+      <div class="hpill"><span class="ldot"></span> Now enrolling schools for 2026-27</div>
+      <h1>The <span class="hi">Foundation</span> of Financial Wisdom</h1>
+      <p>Empowering a generation - the future workforce - to save, invest, and thrive. We make financial literacy engaging, practical, and age-appropriate.</p>
+      <div class="hbtns">
+        <a href="#fschools" class="btn btn-coral">Partner With Your School →</a>
+        <a href="#curr" class="btn btn-ghost">See Curriculum</a>
+      </div>
+      <div class="htrust">
+        <div class="ti">Age-Appropriate</div>
+        <div class="ti">Curriculum-Friendly</div>
+        <div class="ti">Scalable</div>
+        <div class="ti">Impactful</div>
+      </div>
+    </div>
+    <div class="hvis">
+      <div class="hfl hfl1"><span class="fi">📈</span><div><strong>Investment Sim</strong><span>Return: +18% this term</span></div></div>
+      <div class="hcard">
+        <div class="hch">
+          <div class="hava">🧒</div>
+          <div><div class="hname">Rajesh </div><div class="hgrade">Grade 8 · Intermediate Level</div></div>
+          <div class="hbadge">🏆 Top 10%</div>
+        </div>
+        <div class="hpw">
+          <div class="hpl"><span>Savings Race - Week 5 of 8</span><span>72%</span></div>
+          <div class="hbar"><div class="hfill"></div></div>
+        </div>
+        <div class="hmods">
+          <div class="hmod done">✓ Budgeting</div>
+          <div class="hmod done">✓ UPI Basics</div>
+          <div class="hmod act">▶ Investing</div>
+          <div class="hmod">○ Credit</div>
+        </div>
+      </div>
+      <div class="hfl hfl2"><span class="aw">🏅</span><strong>Goal Unlocked!</strong><span>Emergency Fund Set</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<div class="sband">
+  <div class="container">
+    <div class="sbi reveal"><span class="sbn">27%</span><p class="sbl">Indian adult financial literacy rate - youth rate is even lower (NCFE)</p></div>
+    <div class="sbi reveal"><span class="sbn">250M+</span><p class="sbl">School-going children in India who need structured financial education</p></div>
+    <div class="sbi reveal"><span class="sbn">20B+</span><p class="sbl">Monthly UPI transactions children are exposed to money decisions earlier than ever - but without structured guidance.</p></div>
+    <div class="sbi reveal"><span class="sbn">&lt;5%</span><p class="sbl">Less than 5% of Students have access to age-appropriate financial education.</p></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="reveal">
+      <div class="avf">
+        <span>🎓</span>
+        <div class="avb b1"><span class="bi">🌱</span><div><strong>Life Skills</strong><span>Built from age 8+</span></div></div>
+        <div class="avb b2"><span class="bi">🇮🇳</span><div><strong>India-First</strong><span>UPI, GST & more</span></div></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="lbl">About FinEd Junior</div>
+      <h2 class="ttl">Bridging the Gap Between Classroom & Real-World Finance</h2>
+      <p class="sub">FinEd Junior was born out of a simple observation: while schools teach math, science, and technology, very few prepare students for the financial realities of life. Our major motive is to bridge the gap between classroom knowledge and real-world financial skills, empower students, and ensure India's economic growth is matched by financial empowerment at the grassroots level.</p>
+      <div class="vlist">
+        <div class="vi"><div class="vico vc">🎯</div><div><h4>Our Mission</h4><p>To make financial literacy accessible, engaging, and practical for every child, transforming financial education into everyday learning, helping students build habits of saving, budgeting, and responsible spending from a young age.</p></div></div>
+        <div class="vi"><div class="vico vt">🔭</div><div><h4>Our Vision</h4><p> A financially empowered generation that can confidently navigate digital payments, investments, and entrepreneurship. We envision India as a global leader in youth financial literacy, where every child grows up with the skills to secure their future.</p></div></div>
+        <div class="vi"><div class="vico vs">🤝</div><div><h4>Our Promise</h4><p>To create a society where financial awareness is universal, reducing inequality and fostering inclusive growth. We see a world where young learners transform into financially confident leaders, capable of driving innovation and sustainable prosperity.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mqw">
+  <p class="mqn">All 12 curriculum modules</p>
+  <div class="mqt">
+    <span class="mc">💵 Introduction to Money</span><span class="mc">📊 Budgeting Basics</span><span class="mc">💹 Saving &amp; Investing</span><span class="mc">🏦 Banking</span><span class="mc">🛡️ Insurance &amp; Risk</span><span class="mc">🚀 Entrepreneurship</span><span class="mc">🏛️ Taxes &amp; GST</span><span class="mc">💳 Credit &amp; Loans</span><span class="mc">🎯 Goal Setting</span><span class="mc">📱 Digital Finance</span><span class="mc">🌍 Global Markets</span><span class="mc">🌱 Sustainable Finance</span>
+    <span class="mc">💵 Introduction to Money</span><span class="mc">📊 Budgeting Basics</span><span class="mc">💹 Saving &amp; Investing</span><span class="mc">🏦 Banking</span><span class="mc">🛡️ Insurance &amp; Risk</span><span class="mc">🚀 Entrepreneurship</span><span class="mc">🏛️ Taxes &amp; GST</span><span class="mc">💳 Credit &amp; Loans</span><span class="mc">🎯 Goal Setting</span><span class="mc">📱 Digital Finance</span><span class="mc">🌍 Global Markets</span><span class="mc">🌱 Sustainable Finance</span>
+  </div>
+</div>
+
+<!-- FOR SCHOOLS -->
+<section class="fschools" id="fschools">
+  <div class="container">
+    <div class="fsh reveal">
+      <div class="lbl lbl-sun">For Schools</div>
+      <h2 class="ttl" style="color:#fff;">Everything Your School Needs to Launch Financial Education</h2>
+      <p class="sub">FinEd Junior integrates seamlessly into your schedule, curriculum, and reporting - zero extra burden on teachers.</p>
+    </div>
+    <div class="scgrid">
+      <div class="scc reveal"><div class="scico is">📚</div><h4>Curriculum-Ready Modules</h4><p>12 plug-and-play modules mapped to grade levels 6–12. Each module fits into a 45-minute class period with teacher guides, worksheets, and assessments included.</p></div>
+      <div class="scc reveal"><div class="scico it">🧑‍🏫</div><h4>Teacher Training & Support</h4><p>Teaching financial literacy to teachers helps them manage their own finances effectively. We provide practical knowledge on budgeting, savings, investment, and retirement - inspiring students to build lifelong money habits.</p></div>
+      <div class="scc reveal"><div class="scico ic">📊</div><h4>School-Wide Dashboard</h4><p>Real-time analytics for principals and coordinators - track student progress, module completion, and learning outcomes across the entire school.</p></div>
+      <div class="scc reveal"><div class="scico ib">🏆</div><h4>Inter-School Competitions</h4><p>Savings Race, Investment League, Budget Challenge tournaments - motivate students and put your school on the national leaderboard.</p></div>
+      <div class="scc reveal"><div class="scico ig">📜</div><h4>Certifications & Recognition</h4><p>Every student's learning journey is celebrated. Upon completing our modules, students receive an official FinEd Junior Certificate of Achievement - recognised by schools and parents alike.</p></div>
+      <div class="scc reveal"><div class="scico ip">🔗</div><h4>CBSE / ICSE / State Aligned</h4><p>All boards are covered - CBSE, ICSE, State Boards, and more. Beyond academics, these courses prepare students for financial planning and money management, building real-world confidence and independence.</p></div>
+    </div>
+    <div class="scstrip reveal">
+      <div class="scst">
+        <h3>Ready to bring FinEd Junior to your school?</h3>
+        <p>Book a free 30-minute demo for your principal and academic team. No commitment needed.</p>
+      </div>
+      <div class="scstb">
+        <a href="https://forms.gle/cpzH6KrLpjivhW7i6" class="btn btn-white">Book a School Demo</a>
+        <a href="#ppship" class="btn btn-ow">View Packages</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="howh reveal">
+      <div class="lbl">How It Works</div>
+      <h2 class="ttl">Up and Running in 4 Simple Steps</h2>
+      <p class="sub">From enquiry to first classroom session - we handle the heavy lifting so your school can focus on students.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="snum">1</div><h4>Demo Class</h4><p>Our team performs a Demo Class if required by the institution for any further clarification before committing.</p></div>
+      <div class="step reveal"><div class="snum">2</div><h4>School Signs Up</h4><p>Complete a quick interest form. Our team contacts you within 24 hours to understand your school's needs and grade structure.</p></div>
+      <div class="step reveal"><div class="snum">3</div><h4>Classes Begin</h4><p>Students start their tier-appropriate modules - Beginner, Intermediate, or Advanced - with gamified challenges and simulations.</p></div>
+      <div class="step reveal"><div class="snum">4</div><h4>Track & Celebrate</h4><p>Monitor progress on your dashboard. Students receive certificates, schools earn recognition, and parents see real growth.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section class="curr" id="curr">
+  <div class="container">
+    <div class="currh reveal">
+      <div class="lbl">Curriculum</div>
+      <h2 class="ttl">Learning That Grows With Every Grade</h2>
+      <p class="sub">A tiered approach ensures every child learns at the right pace - age-appropriate, curriculum-friendly, and built for lifelong confidence. Modules can be customized as per the institutional requirements. </p>
+    </div>
+    <div class="tgrid">
+      <div class="tc t1 reveal">
+        <span class="tlbl">🌱 Beginner · Grades 6–7</span>
+        <h3>Money Foundations</h3>
+        <p class="tfc">Focus: Foundations of money management</p>
+        <ul>
+          <li>Budgeting Basics - pocket money, tracking expenses</li>
+          <li>Saving & Goal Setting - short-term targets</li>
+          <li>Digital Payments Intro - UPI & debit card awareness</li>
+          <li>Financial Safety Basics - scam recognition</li>
+          <li>Entrepreneurship Lite - lemonade stand activities</li>
+        </ul>
+        <a href="#contact" class="tlnk">Enroll →</a>
+      </div>
+      <div class="tc t2 reveal">
+        <span class="tlbl">📈 Planner · Grades 8–9</span>
+        <h3>Practical Finance</h3>
+        <p class="tfc">Focus: Practical applications & responsibility</p>
+        <ul>
+          <li>Investing Basics - compound interest, stocks & bonds</li>
+          <li>Credit & Loans - borrowing vs saving, interest</li>
+          <li>Insurance Awareness - health, vehicle, life basics</li>
+          <li>Taxes & Civic Responsibility - GST introduction</li>
+          <li>Digital Security - phishing & fraud awareness</li>
+        </ul>
+        <a href="#contact" class="tlnk">Enroll →</a>
+      </div>
+      <div class="tc t3 reveal">
+        <span class="tlbl">🏆 Master · Grades 10–12</span>
+        <h3>Real-World Readiness</h3>
+        <p class="tfc">Focus: Financial readiness for adulthood</p>
+        <ul>
+          <li>Financial Planning - college, career, retirement</li>
+          <li>Advanced Investing - diversification, mutual funds</li>
+          <li>Global Finance - currency, trade, markets</li>
+          <li>Sustainable Finance - ethical & green investing</li>
+          <li>Entrepreneurship & Income - freelancing, startups</li>
+        </ul>
+        <a href="#contact" class="tlnk">Enroll →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="impact" id="impact">
+  <div class="container">
+    <div class="reveal">
+      <div class="lbl">The Value We Create</div>
+      <h2 class="ttl">Built for Students, Parents, Schools & the Nation</h2>
+      <p class="sub">In a country set to become the world's third-largest economy by 2030, why are Indian children still not taught how money works?</p>
+      <div class="icards">
+        <div class="icard reveal"><span class="icn">27%</span><p>Indian adult financial literacy rate - youth rate is even lower (NCFE)</p></div>
+        <div class="icard it reveal"><span class="icn">250M+</span><p>School children who need financial education</p></div>
+        <div class="icard is reveal"><span class="icn">20B+</span><p>Monthly UPI transactions, children are exposed to money decisions earlier than ever - but without structured guidance.</p></div>
+        <div class="icard id reveal"><span class="icn">&lt;5%</span><p>Less than 5% of Students have access to age-appropriate financial education.</p></div>
+      </div>
+    </div>
+    <div class="fbs reveal">
+      <div class="fb2"><blockquote>For Students: Gain lifelong skills in budgeting, saving, and investing - building habits that lead to financial independence and standing out as future-ready professionals.</blockquote><cite> For Students</cite></div>
+      <div class="fb2 fbt"><blockquote>For Parents: Children who understand money management are less likely to succumb to consumerism or peer pressure, reducing financial stress on families.</blockquote><cite> For Parents</cite></div>
+      <div class="fb2 fbs2"><blockquote>For Schools: This goes beyond regular lessons - allowing your school to shine as a forward-thinking institution and reinforcing a reliable parent-school relationship.</blockquote><cite> For Schools</cite></div>
+      <div class="fb2 fbs2"><blockquote>For Nation:  It’s a step toward empowering a financially literate generation that can save, invest, and thrive</blockquote><cite> For Nation</cite></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHOOL TESTIMONIALS -->
+<section class="stesti" id="testi">
+  <div class="container">
+    <div class="sth reveal">
+      <div class="lbl">School Stories</div>
+      <h2 class="ttl">What Educators & Families Are Saying</h2>
+    </div>
+    <div class="stg">
+      <div class="stc reveal">
+        <span class="stag">School Partner</span>
+        <p class="stq">"This is the kind of program that makes us believe our kids will be financially wiser than we ever were."</p>
+        <div class="stau"><div class="stav av1">S</div><div><div class="stn">Priya Pappanan</div></div></div>
+      </div>
+      <div class="stc reveal">
+        <span class="stag">Educator</span>
+        <p class="stq">"We believe financial literacy should be as fundamental as reading and writing. FinEd Junior is helping us make that vision a reality."</p>
+        <div class="stau"><div class="stav av2">R</div><div><div class="stn">Uma Maheswari</div></div></div>
+      </div>
+      <div class="stc reveal">
+        <span class="stag">Student</span>
+        <p class="stq">"FinEd Junior made learning about money fun - I even taught my parents a few tips!"</p>
+        <div class="stau"><div class="stav av3">A</div><div><div class="stn">Rajesh</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERSHIP PACKAGES -->
+<!-- <section class="ppship" id="ppship">
+  <div class="container">
+    <div class="pph reveal">
+      <div class="lbl">School Packages</div>
+      <h2 class="ttl">Transparent Pricing for Every School</h2>
+      <p class="sub">Whether you're a single-campus school or a large trust - we have a plan that fits.</p>
+    </div>
+    <div class="ppg">
+      <div class="ppc reveal">
+        <span class="ppico">🌱</span>
+        <h3>Starter</h3>
+        <p class="ppdesc">Perfect for schools piloting financial education in one or two grades before full rollout.</p>
+        <ul class="ppf">
+          <li>1–2 grade levels</li>
+          <li>Up to 150 students</li>
+          <li>3 curriculum modules</li>
+          <li>Teacher onboarding session</li>
+          <li>Student progress reports</li>
+          <li>Email support</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost" style="width:100%;justify-content:center;">Enquire Now</a>
+      </div>
+      <div class="ppc feat reveal">
+        <div class="ppbadge">Most Popular</div>
+        <span class="ppico">📈</span>
+        <h3>School Plan</h3>
+        <p class="ppdesc">The complete package for schools ready to embed financial literacy across all middle and senior grades.</p>
+        <ul class="ppf">
+          <li>All grade levels (6–12)</li>
+          <li>Up to 800 students</li>
+          <li>All 12 curriculum modules</li>
+          <li>Full teacher training program</li>
+          <li>School-wide analytics dashboard</li>
+          <li>Inter-school competitions</li>
+          <li>Student certificates</li>
+          <li>Dedicated success manager</li>
+        </ul>
+        <a href="#contact" class="btn btn-coral" style="width:100%;justify-content:center;">Book a Demo</a>
+      </div>
+      <div class="ppc reveal">
+        <span class="ppico">🏛️</span>
+        <h3>Group / Trust</h3>
+        <p class="ppdesc">For school groups, trusts, and districts scaling financial literacy across multiple campuses.</p>
+        <ul class="ppf">
+          <li>Multiple campuses</li>
+          <li>Unlimited students</li>
+          <li>Custom curriculum mapping</li>
+          <li>Group-level reporting</li>
+          <li>Co-branded materials</li>
+          <li>Priority implementation support</li>
+          <li>Annual leadership briefings</li>
+        </ul>
+        <a href="#contact" class="btn btn-teal" style="width:100%;justify-content:center;">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- WHY -->
+<section class="why" id="why">
+  <div class="container">
+    <div class="reveal">
+      <div class="lbl">Why FinEd Junior</div>
+      <h2 class="ttl">Built for India's Schools, India's Kids</h2>
+      <p class="sub">In a digital-first economy where UPI is ubiquitous and financial decisions start young, schools need a partner - not just a program.</p>
+      <div class="wcards">
+        <div class="wc hl reveal"><span class="wco">🏆</span><h4>Competitive Advantage</h4><p>Schools offering financial literacy give students a measurable edge in careers, higher education, and life.</p></div>
+        <div class="wc reveal"><span class="wco">📱</span><h4>Digital-First India</h4><p>Modules cover UPI, digital wallets, online fraud, and digital investing - the real financial world today's kids inhabit.</p></div>
+        <div class="wc reveal"><span class="wco">🎮</span><h4>Simulations & Games</h4><p>Savings Race, Investment Game, Allowance Challenge - students learn through doing, not just listening.</p></div>
+        <div class="wc reveal"><span class="wco">📐</span><h4>Zero Curriculum Overload</h4><p>Slots into existing class time. Board-aligned content reinforces math, commerce, and social science - never competes with them.</p></div>
+      </div>
+    </div>
+    <div class="wfacts reveal">
+      <div class="fb2"><blockquote>"Urban parents are more open to financial literacy programs, especially in metros where digital payments and credit use are already common."</blockquote><cite>- Emerging Trend: Urban Parents</cite></div>
+      <div class="fb2 fbt"><blockquote>"Middle-class families are keen on practical education that helps children manage allowances, scholarships, or early earnings."</blockquote><cite>- Emerging Trend: Middle-Class Families</cite></div>
+      <div class="fb2 fbs2"><blockquote>"Parents believe schools offering financial literacy give their kids a competitive edge in life and careers."</blockquote><cite>- Emerging Trend: Competitive Edge</cite></div>
+      <div class="fb2 fbs2"><blockquote>"Some worry it will add pressure to already packed school schedules."</blockquote><cite>- Emerging Trend: Curriculum Overload</cite></div>
+      <div class="fb2 fbs2"><blockquote>"Traditionally, financial discussions are kept away from children, so parents may hesitate initially."</blockquote><cite>- Emerging Trend: Perception of Money as “Adult Topic”</cite></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="container">
+    <h2>Ready to Build <span>Financial Futures?</span></h2>
+    <p>We invite you to join FinEd Junior in your school. Together, we can bridge the gap, empower students, and ensure India's economic growth is matched by financial empowerment at the grassroots level.</p>
+    <div class="ctabtns">
+      <a href="https://forms.gle/cpzH6KrLpjivhW7i6" class="btn btn-white">📧 Book a School Demo</a>
+      <a href="#curr" class="btn btn-ow">View Curriculum</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="fg">
+      <div class="fbl">
+         <a href="#" class="logo">
+    <img src="FinEd logo.png" class="nlogo" srcset=""> </a>
+        <p class="fbp">Bridging the gap between classroom knowledge and real-world financial skills - empowering India's future workforce, one school at a time.</p>
+        <div class="fsoc">
+          <a href="#" class="fsb">𝕏</a><a href="#" class="fsb">in</a><a href="#" class="fsb">f</a><a href="#" class="fsb">▶</a>
+        </div>
+      </div>
+      <div class="fc2"><h5>Program</h5><ul><li><a href="#curr">Curriculum</a></li><li><a href="#curr">Beginner Level</a></li><li><a href="#curr">Planner</a></li><li><a href="#curr">Master</a></li></ul></div>
+      <div class="fc2"><h5>Schools</h5><ul><li><a href="#fschools">Why Partner</a></li><li><a href="#how">How It Works</a></li><li><a href="#ppship">Packages</a></li><li><a href="#contact">Book a Demo</a></li></ul></div>
+      <div class="fc2"><h5>Contact</h5><ul><li><a href="/cdn-cgi/l/email-protection#056d6069696a45636c6b60616f706b6c6a772b6c6b"><span class="__cf_email__" data-cfemail="finedjuniors@gmail.com">finedjuniors@gmail.com</span></a></li><li><a href="tel:+919876543210">+91 9159214719</a></li><li><a href="#about">About Us</a></li><li></li></ul></div>
+    </div>
+    <div class="fbot">
+      <p>© 2026 FinEd Junior. All rights reserved. Made with ❤️ for India's future.</p>
+      <div style="display:flex;gap:1.5rem;">
+        <!-- <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a></div> -->
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
+
+  const ham = document.getElementById('ham');
+  const nl = document.getElementById('nl');
+  ham.addEventListener('click', () => nl.classList.toggle('open'));
+  nl.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nl.classList.remove('open')));
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const siblings = Array.from(e.target.parentElement?.querySelectorAll('.reveal') || []);
+      siblings.forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * 120);
+      });
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
+
